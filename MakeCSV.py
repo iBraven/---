@@ -1,19 +1,26 @@
 import glob
 import csv
+import os
 
-path = "D:\\DSUsers\\UIC82704\\GANeratedHands_Release\\data"
+path = 'E:\\GANeratedHands_Release\\data'
+nume_csv = 'points2D.csv'
+img_wild = '\\*.png'
+points_wild = '\\*joint2D.txt'
 
 
 def format_data(file):
     formated = file.read()
-    formated = formated.split(",")
+    formated = formated.split(',')
     formated[-1] = formated[-1][:-1]
     return formated
 
 
 def make_csv(img_name, pos):
-    # field_names = ['nume_img', 'W', 'T0', 'T1', 'T2', 'T3', 'I0', 'I1', 'I2', 'I3', 'M0', 'M1', 'M2', 'M3', 'R0', 'R1', 'R2', 'R3', 'L0', 'L1', 'L2', 'L3']
-    with open('test.csv', 'a', newline='') as csvfile:
+    # field_names = ['nume_img', 'W', 'T0', 'T1',
+    #               'T2', 'T3', 'I0', 'I1', 'I2', 'I3',
+    #               'M0', 'M1', 'M2', 'M3', 'R0', 'R1', 'R2', 'R3',
+    #               'L0', 'L1', 'L2', 'L3']
+    with open(nume_csv, 'a', newline='') as csvfile:
         writer_csv = csv.writer(csvfile, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
 
         for i in range(len(img_name)):
@@ -24,10 +31,10 @@ def make_csv(img_name, pos):
 
 
 def iter_dir(_path):
-    dir_names = glob.glob(_path + "\\*")
+    dir_names = glob.glob(_path + '\\*')
     for _dir in dir_names:
-        name_img = glob.glob(_dir + "\\*.png")
-        name_pos = glob.glob(_dir + "\\*joint_pos.txt")
+        name_img = glob.glob(_dir + img_wild)
+        name_pos = glob.glob(_dir + points_wild)
         print(_dir)
         make_csv(name_img, name_pos)
 
@@ -44,7 +51,7 @@ def iter_dir(_path):
 #             # name_pos = glob.glob(dir + "\\*joint_pos.txt")
 #             # print(_dir)
 #             # make_csv(name_img, name_pos)
-
+if os.path.exists(nume_csv):
+    os.remove(nume_csv)
 iter_dir(path + '\\noObject')
 iter_dir(path + '\\withObject')
-
